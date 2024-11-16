@@ -1,17 +1,16 @@
 import sys
 import pygame
+from az import make_az
 from Cell import Cell
 from random import randint
-import itertools
 
-W = 1280
-H = 1024
+from config import W, H, radius
 
 class App:
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((W, H), pygame.SCALED)
+        self.screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 
         self.clock = pygame.time.Clock()
 
@@ -19,8 +18,12 @@ class App:
 
     def run(self):
         print("App running")
-       # self.cells = [Cell(self.screen, 1, 60, (W / 2, H / 2)), Cell(self.screen, 2, 60, (W / 2 - 200, H / 2))]
-        self.cell = Cell(self.screen, 1, 30, (W / 2, H / 2))
+
+
+        self.cell = Cell(self.screen, 1, radius, (W / 2, H / 2), ("N00111И1", "N0111И1"))
+        self.cell.is_installed = True
+        # self.cells = make_az(self.screen)
+        # self.cells[0].is_installed = True
         counter = 0
         while True:
             for event in pygame.event.get():
@@ -40,29 +43,31 @@ class App:
                 #     else:
                 #         self.cell.is_hovered = False
 
+                # Использовать мигание для чехла, не для зоны
                 elif(event.type == pygame.MOUSEBUTTONUP):
-                    if(self.cell.clicked_zone.collidepoint(pos)):
-                        self.cell.is_activated = True if (not self.cell.is_activated) else False
+                    # if(self.cell.clicked_zone.collidepoint(pos)):
+                    #     self.cell.is_activated = True if (not self.cell.is_activated) else False
 
-                    # for element in self.cells:
-                    #     if(element.clicked_zone.collidepoint(pos)):# self.cell.clicked_zone.collidepoint(pos)):
-                    #         element.is_activated = True if (not element.is_activated) else False
-                    #        # self.cell.is_activated = True if (not self.cell.is_activated) else False
+                    for cell in self.cells:
+                        if(cell.clicked_zone.collidepoint(pos)):
+                            cell.is_activated = True if (not cell.is_activated) else False
 
-                #elif(event.type == pygame.MOUSEBUTTONUP):
-                    #self.cell.is_activated = True if (not self.cell.is_activated) else False
+
 
             self.screen.fill((255, 255, 255))
             self.cell.draw_hex_area(self.screen)
-            # for element in self.cells:
-            #     element.draw_hex_area(self.screen)# self.cell.draw_hex_area(self.screen)
+            # self.cell1.draw_hex_area(self.screen)
 
-            counter += 1
-            print(counter, self.cell.color)
-            if(counter > 15 and self.cell.is_activated):
-                #self.cell.color = itertools.cycle(self.colors)
-                self.cell.color = self.colors[0] if (self.cell.color != self.colors[0]) else self.colors[1]
-                counter = 0
+            # for cell in self.cells:
+            #     cell.draw_hex_area(self.screen)
+
+
+            # counter += 1
+            # if(counter > 15 and self.cell.is_activated):
+            #     #self.cell.color = itertools.cycle(self.colors)
+            #     self.cell.color = self.colors[0] if (self.cell.color != self.colors[0]) else self.colors[1]
+            #     counter = 0
+
             pygame.display.update()
             self.clock.tick(30)
 
