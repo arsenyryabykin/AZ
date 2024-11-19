@@ -17,7 +17,7 @@ class Cell:
 
         self.is_activated = False
         self.is_hovered = False
-        self.is_installed = False
+        self.is_installed = True
 
 
     # def check_color(self):
@@ -72,7 +72,7 @@ class Cell:
 
         f_sys_index = pygame.font.SysFont('tflextypea', index_font_size)
         text_index = f_sys_index.render(self.id, 1, (0,0,0))
-        index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3)))
+        index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3) - 5))
         Surface.blit(text_index, index_place)
 
 

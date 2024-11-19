@@ -1,8 +1,9 @@
 import sys
 import pygame
 from az import make_az
+from case import draw_case, make_case
 from Cell import Cell
-from random import randint
+from stateline import draw_stateline
 
 from config import W, H, radius
 
@@ -22,8 +23,11 @@ class App:
 
         self.cell = Cell(self.screen, 1, radius, (W / 2, H / 2), ("N00111И1", "N0111И1"))
         self.cell.is_installed = True
-        # self.cells = make_az(self.screen)
-        # self.cells[0].is_installed = True
+
+        self.cells = make_az(self.screen)
+        self.case = make_case(self.screen, 1)
+        self.cells[0].is_installed = True
+
         counter = 0
         while True:
             for event in pygame.event.get():
@@ -36,6 +40,8 @@ class App:
                     if(event.key == pygame.K_q):
                         pygame.quit()
                         sys.exit()
+                    elif(event.key == pygame.K_s):
+                        pygame.image.save(self.screen, "screenshot.png")
 
                 # elif(event.type == pygame.MOUSEMOTION):
                 #     if(self.cell.clicked_zone.collidepoint(pos)):
@@ -53,13 +59,21 @@ class App:
                             cell.is_activated = True if (not cell.is_activated) else False
 
 
-
+            # Отрисовка #########################################################
             self.screen.fill((255, 255, 255))
-            self.cell.draw_hex_area(self.screen)
-            # self.cell1.draw_hex_area(self.screen)
+            # self.cell.draw_hex_area_invert(self.screen)
 
-            # for cell in self.cells:
-            #     cell.draw_hex_area(self.screen)
+            for cell in self.cells:
+                cell.draw_hex_area(self.screen)
+
+
+            for cell in self.case:
+                cell.is_installed = True
+                cell.draw_hex_area_invert(self.screen)
+
+            draw_case(self.screen)
+            draw_stateline(self.screen)
+            ##########################################################
 
 
             # counter += 1

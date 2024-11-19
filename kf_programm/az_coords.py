@@ -197,6 +197,6 @@ bipr_coords = dict()
 
 bipr_number = 1
 for coord in az_coords.keys():
-    bipr_coords[coord] = bipr_number
+    bipr_coords[coord] = str(bipr_number)
     bipr_number += 1
 
