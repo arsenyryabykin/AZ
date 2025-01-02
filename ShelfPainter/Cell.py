@@ -69,8 +69,8 @@ class Cell:
         pygame.draw.aalines(Surface, self.border_color, True, line_coords)
 
 
-
-        f_sys_index = pygame.font.SysFont('tflextypea', index_font_size)
+        #f_sys_index = pygame.font.SysFont('tflextypea', index_font_size)
+        f_sys_index = pygame.font.Font('font.ttf', index_font_size)
         text_index = f_sys_index.render(self.id, 1, (0,0,0))
         index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3) - 5))
         Surface.blit(text_index, index_place)

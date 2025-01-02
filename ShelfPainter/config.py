@@ -1,11 +1,8 @@
-W = 1536
-H = 864
-
-radius = 40
-
+W = 2560
+H = 1440
+radius = 60
 
 shelf_center = (W/2, H/2)
 
-
-font_size = 18
-index_font_size = 12
+font_size = 24
+index_font_size = 18
