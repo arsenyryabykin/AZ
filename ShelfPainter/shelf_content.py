@@ -24,6 +24,9 @@ xlsx_coords = {"А1":(3,2), "А2":(3,3), "А3":(3,4),"А4":(3,5),"А5":(3,6),"А
 
 tvs_list = []
 repeat_tvs_list = []
+
+suz_list = []
+repeat_suz_list = []
 def get_shelf(shelf_number):
     shelf_i = workbook[str(shelf_number)]
     shelf = dict()
@@ -32,34 +35,69 @@ def get_shelf(shelf_number):
 
             tvs = shelf_i.cell(row=value[0], column=value[1]).value
             if(tvs == None):
-                tvs = suz = ""
+                tvs = ""
             else:
+                # Проверка идентификационного номера #
+                if(len(tvs) != 8 or tvs[0] != 'N' or tvs[1:3] != "00" or tvs[-2] != 'И' or (tvs[-1] not in ['1','2','3','4','5'])):
+                    showerror("Ошибка", "Неверная запись ИТВС в ячейке " + str(key) + "-" + str(shelf_number))
+                    sys.exit()
+                ######################################
+                # Проверка повторов #
                 if(tvs not in tvs_list):
                     tvs_list.append(tvs)
                 elif(tvs not in repeat_tvs_list):
-                    repeat_tvs_list.append(tvs)  # Проверка повторов #
+                    repeat_tvs_list.append(tvs)
+                #####################
 
+            suz = shelf_i.cell(row=value[0]+1, column=value[1]).value
+            if(suz == None):
+                suz = ""
+            else:
+                # Проверка идентификационного номера #
+                if(len(suz) != 7 or tvs[0] != 'N' or tvs[1] != '0' or tvs[-2] != 'И' or (suz[-1] not in ['6', '7'])):
+                    showerror("Ошибка", "Неверная запись ИПС СУЗ в ячейке " + str(key) + "-" + str(shelf_number))
+                    sys.exit()
+                ######################################
+                # Проверка повторов #
+                if(suz not in suz_list):
+                    suz_list.append(suz)
+                elif(suz not in repeat_suz_list):
+                    repeat_suz_list.append(suz)
+                #####################
 
-                suz = shelf_i.cell(row=value[0]+1, column=value[1]).value
-                if(suz == None):
-                    suz = ""
             shelf[key] = (tvs, suz)
 
     return shelf
 
 def check_unique(shelves):
-    repeatings = []
+    tvs_repeatings = []
     for tvs in repeat_tvs_list:
         repeats = []
         for i, shelf in enumerate(shelves, 1): # Выбор стеллажа
             for cell in shelf:  # Проход по ячейкам i-го стеллажа
                 if(cell.tvs_text == tvs):
                     repeats.append(str(cell.id) + "-" + str(i))
-        repeatings.append(repeats)
+        tvs_repeatings.append(repeats)
 
-    if(repeatings):
-        error_text = "Совпадения ТВС в следующих ячейках:\n"
-        for element in repeatings:
+    suz_repeatings = []
+    for suz in repeat_suz_list:
+        repeats = []
+        for i, shelf in enumerate(shelves, 1): # Выбор стеллажа
+            for cell in shelf:  # Проход по ячейкам i-го стеллажа
+                if(cell.suz_text == suz):
+                    repeats.append(str(cell.id) + "-" + str(i))
+        suz_repeatings.append(repeats)
+
+    error_text = ""
+    if(tvs_repeatings):
+        error_text += "Совпадения ТВС в следующих ячейках:\n"
+        for element in tvs_repeatings:
+            error_text += " ".join(element)
+            error_text += '\n'
+
+    if(suz_repeatings):
+        error_text += "Совпадения ПС СУЗ в следующих ячейках:\n"
+        for element in suz_repeatings:
             error_text += " ".join(element)
             error_text += '\n'
 
