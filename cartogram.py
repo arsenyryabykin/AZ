@@ -1,7 +1,7 @@
 import sys
 import pygame
 from common import draw_hex_area, draw_hex_area_invert, draw_case, text_box, get_az_data, colors, get_case_data
-from lattice import az_coords
+from az_lattice import az_coords
 from case_lattice import case_coords, case_cells_coords
 from resources import W, H, radius
 from resources import BLACK, WHITE, axes

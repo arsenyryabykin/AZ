@@ -1,6 +1,6 @@
 from resources import BLACK, WHITE, axes, W, H, radius
 from common import draw_hex_area, draw_hex_area_invert, draw_case, text_box, get_az_data, colors, get_case_data
-from lattice import az_coords
+from az_lattice import az_coords
 from common import make_case_labels, text, load_schedule, get_az_data
 from case_lattice import case_coords, case_cells_coords
 
@@ -8,6 +8,8 @@ from case_lattice import case_coords, case_cells_coords
 
 az_data = get_az_data()
 
+
+#########################################################
 def make_cartogram(display, type = 'wb'):
     # Получить данные по координатам и ТВС из БД
     text_az_data = get_az_data()
@@ -27,6 +29,7 @@ def make_cartogram(display, type = 'wb'):
         draw_hex_area(display, color_bg, BLACK, radius, value, 1)
         display.blit(res, (value[0] - res.get_width() / 2, value[1] - res.get_height() / 2))
 
+######################################################3
 def make_case(display, case_number):
 
     case_data = get_case_data(case_number)  # Получить данные по чехлам из БД для отрисовки
@@ -48,7 +51,7 @@ def make_case(display, case_number):
 
 
 def anim(display, n):
-    display.fill(WHITE)
+    # display.fill(WHITE)
     for i in range(n):
         pos_i = load_schedule[i][0] # Взятие координаты очередной ячейки в системе хх-хх по порядку загрузки
         coord_i = az_coords[pos_i] # Взятие координаты очередной ячейки в декартовой плоскости

@@ -1,8 +1,8 @@
 import math
-from resources import W, H
+from config import radius, case_center
 
-radius = 60
-x0, y0 = W/2, H/2
+# radius = 60
+x0, y0 = case_center
 x = 2 * radius
 y = math.sqrt(3/4) * x
 dx = 2.7*radius

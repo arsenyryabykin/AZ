@@ -3,7 +3,7 @@ from math import sqrt, ceil
 import sqlite3
 from enum import Enum
 from case_lattice import dx, dy, radius, x0, y0
-from resources import BLACK, WHITE
+from config import BLACK, WHITE
 
 shelf_1 = []; shelf_2 = []; shelf_3 = []
 case_1 = []; case_2 = []; case_3 = []; case_4 = []; case_5 = []; case_6 = []; case_7 = []
@@ -94,6 +94,8 @@ def draw_hex_area_invert(Surface, color, border_color, radius, position):
     pygame.draw.polygon(Surface, color, line_coords)
     pygame.draw.aalines(Surface, border_color, True, line_coords)
 
+
+# Запрос данных из БД по загрузке АЗ
 def get_az_data() -> dict:
     conn = sqlite3.connect('imitators.db')
     cur = conn.cursor()
@@ -104,12 +106,12 @@ def get_az_data() -> dict:
 
     text_az_data = {}
     for coord, tvs, suz, case in data:
-        text_az_data[coord] = (tvs, suz, case)
+        text_az_data[coord] = (tvs, suz, case) # Получение данных из БД в формате {id :(ТВС, СУЗ, номер чехла)
 
     return text_az_data
 
 
-# Получить данные по чехлам из БД для отрисовки
+# Запрос данных из БД по загрузке чехла i
 def get_case_data(case_number):
     conn = sqlite3.connect('imitators.db')
     cur = conn.cursor()
@@ -121,7 +123,7 @@ def get_case_data(case_number):
 
     text_case_data = {}
     for coord, tvs, suz in data:
-        text_case_data[coord] = (tvs, suz)
+        text_case_data[coord] = (tvs, suz)  # Получение данных из БД в формате {id :(ТВС, СУЗ)
 
     return text_case_data
 
@@ -215,3 +217,6 @@ colors = {1 : (255, 255, 0),
 5 : (220, 20, 60),
 6 : (152, 251, 152),
 7 : (255, 165, 0)}
+
+
+print(get_case_data(7))

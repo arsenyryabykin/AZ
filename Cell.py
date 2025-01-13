@@ -2,6 +2,7 @@ import pygame
 from math import sqrt
 from config import font_size, index_font_size
 from os import path
+from config import WHITE
 
 
 class Cell:
@@ -27,7 +28,7 @@ class Cell:
         Методы
         ------
         """
-    def __init__(self, id, radius, position, text=(None, None)):
+    def __init__(self, id, radius, position, text=(None, None), color = WHITE):
         """
          Устанавливает все необходимые атрибуты для объекта Cell.
          Параметры
@@ -40,13 +41,15 @@ class Cell:
             координата ячейки в системе координат поверхности pygame
         text : tuple(str, str)
             идентификационные номера содержимого ячейки - ТВС/ИТВС, ПС СУЗ/ИПС СУЗ
+        color : tuple(r,g,b)
+            цвет ячейки
          """
         self.id = id
         self.radius = radius
         self.position = position
         self.tvs_text = text[0]
         self.suz_text = text[1] if text[1] is not None else " "
-        self.color = (255, 255, 255)
+        self.color = color
         self.border_color = (0,0,0)
         self.is_installed = True
 
@@ -54,7 +57,7 @@ class Cell:
         """
            Отрисовка шестигранника в y-ориентации
                    Параметры:
-                           Surface (pygame.surface): поверхность для отрисовки
+                           surface (pygame.surface): поверхность для отрисовки
         """
         line_coords = []
         line_coords.append((self.position[0], self.position[1] + 2 * self.radius/ sqrt(3)))
@@ -82,7 +85,7 @@ class Cell:
         # Работа с текстом
         f_sys_index = pygame.font.Font('font.ttf', index_font_size) if path.exists('font.ttf') else pygame.font.SysFont('timesnewroman', index_font_size)
         text_index = f_sys_index.render(self.id, 1, (0,0,0))
-        index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3) - 5))
+        index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3) - 10))
         surface.blit(text_index, index_place)
 
 
@@ -127,7 +130,7 @@ class Cell:
         # Работа с текстом
         f_sys_index = pygame.font.Font('font.ttf', index_font_size) if path.exists('font.ttf') else pygame.font.SysFont('timesnewroman', index_font_size)
         text_index = f_sys_index.render(self.id, 1, (0,0,0))
-        index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3) - 5))
+        index_place = text_index.get_rect(midbottom=(self.position[0], self.position[1] + 2 * self.radius/ sqrt(3) - 10))
         surface.blit(text_index, index_place)
 
 
